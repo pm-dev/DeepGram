@@ -26,7 +26,7 @@ THE SOFTWARE.
 
 ## DeepGram
 
-Copyright (c) 2016 Peter Meyers <meyers@operator.com>
+Copyright (c) 2016 Peter Meyers <petermeyers1@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

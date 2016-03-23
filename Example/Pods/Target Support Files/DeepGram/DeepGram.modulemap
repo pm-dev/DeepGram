@@ -1,4 +1,4 @@
-framework module DGClient {
+framework module DeepGram {
   umbrella header "DeepGram-umbrella.h"
 
   export *

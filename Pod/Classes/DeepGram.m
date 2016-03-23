@@ -1,12 +1,12 @@
 //
 //  DeepGramClient.m
-//  Bill-iOS
+//  Pods
 //
 //  Created by Peter Meyers on 3/18/16.
-//  Copyright © 2016 Operator. All rights reserved.
+//  Copyright (c) 2016 Peter Meyers. All rights reserved.
 //
 
-#import "DGClient.h"
+#import "DeepGram.h"
 @import AFNetworking;
 
 NS_ASSUME_NONNULL_BEGIN
