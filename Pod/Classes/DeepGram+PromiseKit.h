@@ -78,6 +78,23 @@ NS_ASSUME_NONNULL_BEGIN
 - (AnyPromise *)transcriptForContent:(NSString *)contentID
                             progress:(nullable void (^)(NSProgress *progress))progress;
 
+/**
+ *  Search through many files.
+ *
+ *  @param query The string to search the content with.
+ *  @param tag
+ *  @param Nmax          Maximum number of words in the match
+ *  @param confidenceMin value between 0 and 1. Confidence threshold that must be met before allowing a match.
+ *  @param progress A block object to be executed when the download progress is updated. Note this block is called on the session queue, not the main queue.
+ *
+ *  @return A promise that fulfills with (NSArray<DGMatch *> *matches).
+ */
+- (AnyPromise *)searchAllContentWithQuery:(NSString *)query
+                                      tag:(nullable NSString *)tag
+                                     Nmax:(nullable NSNumber *)Nmax
+                            confidenceMin:(nullable NSNumber *)confidenceMin
+                                 progress:(nullable void (^)(NSProgress *progress))progress;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -76,6 +76,21 @@ NS_ASSUME_NONNULL_BEGIN
     }];
 }
 
+- (AnyPromise *)searchAllContentWithQuery:(NSString *)query
+                                      tag:(nullable NSString *)tag
+                                     Nmax:(nullable NSNumber *)Nmax
+                            confidenceMin:(nullable NSNumber *)confidenceMin
+                                 progress:(nullable void (^)(NSProgress *))progress
+{
+    return [AnyPromise promiseWithResolverBlock:^(PMKResolver resolve) {
+        [self searchAllContentWithQuery:query tag:tag Nmax:Nmax confidenceMin:confidenceMin progress:progress success:^(NSURLSessionDataTask *task, NSArray<DGMatch *> *matches) {
+            resolve(matches);
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            resolve(error);
+        }];
+    }];
+}
+
 @end
 
 NS_ASSUME_NONNULL_END

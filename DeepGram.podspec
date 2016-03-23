@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "DeepGram"
-  s.version          = "0.1.3"
+  s.version          = "0.1.4"
   s.summary          = "Use AI to spot keywords and get insights in audio"
   s.description      = "DeepGram uses artificial intelligence to recognize speech, search for moments, and categorize audio and video. Try it on calls, meetings, podcasts, video clips, lectures—and get actionable insights from an easy to use API."
   s.homepage         = "https://www.deepgram.com"

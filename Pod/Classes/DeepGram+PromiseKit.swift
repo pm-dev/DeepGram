@@ -73,9 +73,9 @@ extension DGClient {
      - parameter confidenceMin: Value between 0 and 1. Confidence threshold that must be met before allowing a match.
      - parameter progress:      A closure to be executed when the download progress is updated. Note this closure is called on the session queue, not the main queue.
 
-     - returns: A promise that fulfills with an array of DGMatch objects
+     - returns: A promise that fulfills with an array of DGMatch objects.
      */
-    public func matchesInContent(contentID: String, withQuery query: String, snippet: Bool, nmax Nmax: Float?, confidenceMin: Float?, progress: ((NSProgress) -> Void)?) -> Promise<Array<DGMatch>> {
+    public func matchesInContent(contentID: String, query: String, snippet: Bool, Nmax: Float?, confidenceMin: Float?, progress: ((NSProgress) -> Void)?) -> Promise<Array<DGMatch>> {
         return Promise { fulfill, reject in
             self.matchesInContent(contentID, withQuery: query, snippet: snippet, nmax: Nmax, confidenceMin: confidenceMin, progress: progress, success: { task, matches in
                 fulfill(matches)
@@ -97,6 +97,27 @@ extension DGClient {
         return Promise { fulfill, reject in
             self.transcriptForContent(contentID, progress: progress, success: { task, paragraphs in
                 fulfill(paragraphs)
+            }, failure: { task, error in
+                reject(error)
+            })
+        }
+    }
+    
+    /**
+     Search through many files.
+
+     - parameter query:    The string to search the content with.
+     - parameter tag:
+     - parameter Nmax:          Maximum number of words in the match.
+     - parameter confidenceMin: Value between 0 and 1. Confidence threshold that must be met before allowing a match.
+     - parameter progress: A closure to be executed when the download progress is updated. Note this closure is called on the session queue, not the main queue.
+
+     - returns: A promise that fulfills with an array of DGMatch objects.
+     */
+    public func searchAllContent(query: String, tag: String?, Nmax: Float?, confidenceMin: Float?, progress: ((NSProgress) -> Void)?) -> Promise<Array<DGMatch>> {
+        return Promise { fulfill, reject in
+            self.searchAllContentWithQuery(query, tag: tag, nmax: Nmax, confidenceMin: confidenceMin, progress: progress, success: { task, matches in
+                fulfill(matches)
             }, failure: { task, error in
                 reject(error)
             })

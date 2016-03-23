@@ -17,8 +17,9 @@ NSString *const DGErrorInfoKey = @"Deep Gram Error Info";
 
 @interface DGMatch ()
 
-@property (nonatomic, readwrite) NSNumber *startTime;
-@property (nonatomic, readwrite) NSNumber *endTime;
+@property (nonatomic, readwrite) NSString *contentID;
+@property (nonatomic, readwrite, nullable) NSNumber *startTime;
+@property (nonatomic, readwrite, nullable) NSNumber *endTime;
 @property (nonatomic, readwrite) NSNumber *confidence;
 @property (nonatomic, readwrite, nullable) NSString *snippet;
 
@@ -126,6 +127,7 @@ NSString *const DGErrorInfoKey = @"Deep Gram Error Info";
             for (NSNumber *resultIndex in order) {
                 NSUInteger index = resultIndex.unsignedIntegerValue;
                 DGMatch *match = [[DGMatch alloc] init];
+                match.contentID = contentID;
                 match.confidence = confidences[index];
                 match.snippet = snippets[index];
                 match.startTime = startTimes[index];
@@ -153,6 +155,40 @@ NSString *const DGErrorInfoKey = @"Deep Gram Error Info";
             [paragraphs enumerateObjectsUsingBlock:^(NSString *paragraph, NSUInteger idx, BOOL *stop) {
                 results[paragraphStartTimes[idx]] = paragraph;
             }];
+            success(task, results);
+        }
+    } failure:failure];
+}
+
+- (NSURLSessionDataTask *)searchAllContentWithQuery:(NSString *)query
+                                                tag:(nullable NSString *)tag
+                                               Nmax:(nullable NSNumber *)Nmax
+                                      confidenceMin:(nullable NSNumber *)confidenceMin
+                                           progress:(nullable void (^)(NSProgress *))progress
+                                            success:(nullable void (^)(NSURLSessionDataTask *, NSArray<DGMatch *> *))success
+                                            failure:(nullable void (^)(NSURLSessionDataTask *, NSError *))failure
+{
+    NSMutableDictionary *parameters = [_userIDParameter mutableCopy];
+    parameters[@"action"] = @"group_search";
+    parameters[@"query"] = query;
+    parameters[@"tag"] = tag ?: @"*";
+    NSMutableDictionary *filter = [@{} mutableCopy];
+    filter[@"Nmax"] = Nmax;
+    filter[@"Pmin"] = confidenceMin;
+    parameters[@"filter"] = filter;
+    return [_session POST:@"" parameters:parameters progress:progress success:^(NSURLSessionDataTask *task, NSDictionary * _Nullable JSON) {
+        if (![self _checkErrorInJSON:JSON task:task failure:failure] && success) {
+            NSArray<NSString *> *contentIDs = JSON[@"contentID"];
+            NSArray<NSNumber *> *order = JSON[@"N"];
+            NSArray<NSNumber *> *confidences = JSON[@"P"];
+            NSMutableArray *results = [NSMutableArray arrayWithCapacity:order.count];
+            for (NSNumber *resultIndex in order) {
+                NSUInteger index = resultIndex.unsignedIntegerValue;
+                DGMatch *match = [[DGMatch alloc] init];
+                match.contentID = contentIDs[index];
+                match.confidence = confidences[index];
+                [results addObject:match];
+            }
             success(task, results);
         }
     } failure:failure];

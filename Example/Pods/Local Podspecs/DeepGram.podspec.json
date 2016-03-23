@@ -1,6 +1,6 @@
 {
   "name": "DeepGram",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "summary": "Use AI to spot keywords and get insights in audio",
   "description": "DeepGram uses artificial intelligence to recognize speech, search for moments, and categorize audio and video. Try it on calls, meetings, podcasts, video clips, lectures—and get actionable insights from an easy to use API.",
   "homepage": "https://www.deepgram.com",
@@ -10,7 +10,7 @@
   },
   "source": {
     "git": "https://github.com/pm-dev/DeepGram.git",
-    "tag": "0.1.2"
+    "tag": "0.1.3"
   },
   "platforms": {
     "ios": "8.0"

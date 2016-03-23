@@ -91,7 +91,7 @@ typedef NS_ENUM(NSUInteger, DGIndexStatus)
  *  @param Nmax          Maximum number of words in the match
  *  @param confidenceMin value between 0 and 1. Confidence threshold that must be met before allowing a match.
  *  @param progress      A block object to be executed when the download progress is updated. Note this block is called on the session queue, not the main queue.
- *  @param success       A block object to be executed when the task finishes successfully. This block has no return value and takes two arguments: the data task, and an array or DGMatch objects.
+ *  @param success       A block object to be executed when the task finishes successfully. This block has no return value and takes two arguments: the data task, and an array of DGMatch objects.
  *  @param failure       A block object to be executed when the task finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a two arguments: the data task and the error describing the network or parsing error that occurred.
  *
  *  @return An object that provides API HTTP request-specific information such as the URL, cache policy, request type, and body data or body stream.
@@ -121,6 +121,27 @@ typedef NS_ENUM(NSUInteger, DGIndexStatus)
                                        failure:(nullable void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
 /**
+ *  Search through many files.
+ *
+ *  @param query The string to search the content with.
+ *  @param tag
+ *  @param Nmax          Maximum number of words in the match
+ *  @param confidenceMin value between 0 and 1. Confidence threshold that must be met before allowing a match.
+ *  @param progress A block object to be executed when the download progress is updated. Note this block is called on the session queue, not the main queue.
+ *  @param success  A block object to be executed when the task finishes successfully. This block has no return value and takes two arguments: the data task, and an array of DGMatch objects.
+ *  @param failure  A block object to be executed when the task finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a two arguments: the data task and the error describing the network or parsing error that occurred.
+ *
+ *  @return An object that provides API HTTP request-specific information such as the URL, cache policy, request type, and body data or body stream.
+ */
+- (NSURLSessionDataTask *)searchAllContentWithQuery:(NSString *)query
+                                                tag:(nullable NSString *)tag
+                                               Nmax:(nullable NSNumber *)Nmax
+                                      confidenceMin:(nullable NSNumber *)confidenceMin
+                                           progress:(nullable void (^)(NSProgress *progress))progress
+                                            success:(nullable void (^)(NSURLSessionDataTask *task, NSArray<DGMatch *> *matches))success
+                                            failure:(nullable void (^)(NSURLSessionDataTask *task, NSError *error))failure;
+
+/**
  *  The manager responsible for managing HTTP requests to the Deep Gram server.
  */
 @property (nonatomic, readonly) AFHTTPSessionManager *session;
@@ -144,8 +165,9 @@ typedef NS_ENUM(NSUInteger, DGIndexStatus)
  */
 @interface DGMatch : NSObject
 
-@property (nonatomic, readonly) NSNumber *startTime;
-@property (nonatomic, readonly) NSNumber *endTime;
+@property (nonatomic, readonly) NSString *contentID;
+@property (nonatomic, readonly, nullable) NSNumber *startTime;
+@property (nonatomic, readonly, nullable) NSNumber *endTime;
 @property (nonatomic, readonly) NSNumber *confidence;
 @property (nonatomic, readonly, nullable) NSString *snippet;
 
