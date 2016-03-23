@@ -1,0 +1,33 @@
+PODS:
+  - AFNetworking/NSURLSession (3.0.4):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (3.0.4)
+  - AFNetworking/Security (3.0.4)
+  - AFNetworking/Serialization (3.0.4)
+  - DeepGram (0.1.0):
+    - DeepGram/DGClient (= 0.1.0)
+    - DeepGram/PromiseKit (= 0.1.0)
+  - DeepGram/DGClient (0.1.0):
+    - AFNetworking/NSURLSession (~> 3.0)
+  - DeepGram/PromiseKit (0.1.0):
+    - DeepGram/DGClient
+    - PromiseKit/CorePromise (~> 3.0)
+  - PromiseKit/CorePromise (3.0.3)
+
+DEPENDENCIES:
+  - DeepGram (from `../`)
+
+EXTERNAL SOURCES:
+  DeepGram:
+    :path: ../
+
+SPEC CHECKSUMS:
+  AFNetworking: a0075feb321559dc78d9d85b55d11caa19eabb93
+  DeepGram: 3e97b6f5cb0ae5525f92de21c59e249d771c4c98
+  PromiseKit: 00ec2a219bf5ad2833f95977698e921932b8dfd3
+
+PODFILE CHECKSUM: a9ee0dea7e764c13b47bea1faa5201dceb7f56a6
+
+COCOAPODS: 1.0.0.beta.6
