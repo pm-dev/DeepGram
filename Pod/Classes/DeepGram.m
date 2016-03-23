@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-NSString *const DGBaseURLString = @"api.deepgram.com";
+NSString *const DGBaseURLString = @"https://api.deepgram.com";
 NSString *const DGErrorDomain = @"Deep Gram Error Domain";
 NSString *const DGErrorInfoKey = @"Deep Gram Error Info";
 
@@ -25,6 +25,17 @@ NSString *const DGErrorInfoKey = @"Deep Gram Error Info";
 @end
 
 @implementation DGMatch
+
+- (NSString *)description
+{
+    NSMutableString *d = [NSStringFromClass([self class]) mutableCopy];
+    [d appendFormat:@" - Start Time: %@", self.startTime];
+    [d appendFormat:@" - End Time: %@", self.endTime];
+    [d appendFormat:@" - Confidence: %@", self.confidence];
+    [d appendFormat:@" - Snippet: %@", self.snippet];
+    return d;
+}
+
 @end
 
 @implementation DGClient {
@@ -34,10 +45,9 @@ NSString *const DGErrorInfoKey = @"Deep Gram Error Info";
 
 - (instancetype)initWithHTTPSession:(AFHTTPSessionManager *)session userID:(NSString *)userID
 {
-    if (self = [super init]) {
-        _userIDParameter = @{@"userID": userID};
-        _session = session;
-    }
+    self = [super init];
+    _userIDParameter = @{@"userID": userID};
+    _session = session;
     return self;
 }
 
@@ -100,6 +110,7 @@ NSString *const DGErrorInfoKey = @"Deep Gram Error Info";
     parameters[@"action"] = @"object_search";
     parameters[@"contentID"] = contentID;
     parameters[@"query"] = query;
+    parameters[@"snippet"] = @(snippet);
     NSMutableDictionary *filter = [@{} mutableCopy];
     filter[@"Nmax"] = Nmax;
     filter[@"Pmin"] = confidenceMin;
@@ -175,7 +186,9 @@ NSString *const DGErrorInfoKey = @"Deep Gram Error Info";
 
 - (instancetype)initWithUserID:(NSString *)userID
 {
-    return [self initWithHTTPSession:[[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:DGBaseURLString]] userID:userID];
+    self = [self initWithHTTPSession:[[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:DGBaseURLString]] userID:userID];
+    self.session.requestSerializer = [AFJSONRequestSerializer serializer];
+    return self;
 }
 
 @end
