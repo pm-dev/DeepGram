@@ -71,7 +71,7 @@ NSString *const DGErrorInfoKey = @"Deep Gram Error Info";
                            failure:(nullable void (^)(NSURLSessionDataTask *, NSError *))failure
 {
     NSMutableDictionary *parameters = [_userIDParameter mutableCopy];
-    parameters[@"data_url"] = audioURL;
+    parameters[@"data_url"] = audioURL.absoluteString;
     parameters[@"action"] = @"index_content";
     return [_session POST:@"" parameters:parameters progress:progress success:^(NSURLSessionDataTask *task, NSDictionary * _Nullable JSON) {
         if (![self _checkErrorInJSON:JSON task:task failure:failure] && success) {
